@@ -106,6 +106,41 @@
   }
 }
 
+@media (orientation: portrait) and (max-height: 700px) {
+  :root {
+    --gate-inset: calc(0.06 * var(--screen-h));
+  }
+
+  .royale-card {
+    padding-top: calc(22 * var(--u));
+    padding-bottom: calc(28 * var(--u));
+  }
+
+  .royale-card__symbol {
+    width: calc(88 * var(--u));
+  }
+
+  .royale-card__mantra {
+    margin-top: calc(5 * var(--u));
+  }
+
+  .royale-card__guest {
+    margin-top: calc(6 * var(--u));
+  }
+
+  .royale-card__note {
+    margin-top: calc(12 * var(--u));
+  }
+
+  .royale-card__cue {
+    margin-top: calc(14 * var(--u));
+  }
+
+  .royale-gate__elephant {
+    bottom: calc(8 * var(--u));
+  }
+}
+
 @media (orientation: landscape) {
   :root {
     --k: calc(var(--screen-h) / 717);
