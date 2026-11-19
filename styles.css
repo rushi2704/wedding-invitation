@@ -118,9 +118,8 @@
   }
 
   .royale-gate {
-    /* Anchor the cover to the phone's viewport width. Some in-app browsers
-       report a narrower flex containing block than 100vw, which left the
-       card art clipped on one side while the doors still filled the screen. */
+    /* Match the phone's visible width, including browsers that reserve space
+       for a scrollbar inside the fixed inset box. */
     left: 0;
     right: auto;
     width: 100vw;
@@ -133,6 +132,15 @@
     flex: 0 0 auto;
     align-self: center;
     width: min(100vw, 500px);
+  }
+
+  .royale-card::before {
+    /* Keep the Wrapper_P card face aligned without calc division, which has
+       varied across mobile browser engines. */
+    top: -17.8998%;
+    bottom: -26.7303%;
+    left: -13.9304%;
+    right: -13.9304%;
   }
 }
 
