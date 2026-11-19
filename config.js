@@ -243,7 +243,12 @@
 
     farewell: { line: 'Your Presence Means the World to Us' },
 
-    social: { instagram: true, instagramUrl: 'https://instagram.com' },
+    social: {
+      instagram: true,
+      instagramUrl: 'https://www.instagram.com/rushikesh_patil.4/',
+      groomInstagramUrl: 'https://www.instagram.com/rushikesh_patil.4/',
+      brideInstagramUrl: 'https://www.instagram.com/bhakti_kahalekar/',
+    },
 
     music: { enabled: true, src: 'music/Jashn-e-bahara Instrumental.mp3', volume: 0.8 },
   };

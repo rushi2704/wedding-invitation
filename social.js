@@ -227,8 +227,14 @@
   }
 
   // ---- Instagram ------------------------------------------------------------
-  function instagramUrl() {
-    return ((RY.config.social && RY.config.social.instagramUrl) || '').trim();
+  function groomInstagramUrl() {
+    var social = RY.config.social || {};
+    return (social.groomInstagramUrl || social.instagramUrl || 'https://www.instagram.com/rushikesh_patil.4/').trim();
+  }
+
+  function brideInstagramUrl() {
+    var social = RY.config.social || {};
+    return (social.brideInstagramUrl || '').trim() || 'https://www.instagram.com/bhakti_kahalekar/';
   }
 
   if (igBtn) {
@@ -238,13 +244,12 @@
       // rather than at a control somewhere else on the page.
       if (editing && RY.canEdit('social')) {
         openModal(
-          '<h3 class="ry-modal__title" id="ryModalTitle">Your Instagram</h3>' + DIVIDER +
-          '<p class="ry-modal__text">Paste the page guests should be offered. ' +
-          'Left empty, the button opens Instagram itself - or use the &times; ' +
-          'on the icon to take it off the invitation.</p>' +
-          '<input type="url" class="ry-modal__input" id="ryIgInput" ' +
-          'placeholder="https://www.instagram.com/yourhandle" value="' +
-          esc(instagramUrl()) + '">' +
+          '<h3 class="ry-modal__title" id="ryModalTitle">Couple Instagram</h3>' + DIVIDER +
+          '<p class="ry-modal__text">Paste the groom and bride Instagram profile links.</p>' +
+          '<input type="url" class="ry-modal__input" id="ryGroomIgInput" ' +
+          'placeholder="Groom Instagram URL" value="' + esc(groomInstagramUrl()) + '">' +
+          '<input type="url" class="ry-modal__input" id="ryBrideIgInput" ' +
+          'placeholder="Bride Instagram URL" value="' + esc(brideInstagramUrl()) + '">' +
           '<div class="ry-modal__actions">' +
           '<button class="ry-modal__btn ry-modal__btn--primary" type="button" ' +
           'data-ry-ig-save>Save</button>' +
@@ -259,11 +264,12 @@
       // first.
       openModal(
         '<h3 class="ry-modal__title" id="ryModalTitle">Follow the Couple</h3>' + DIVIDER +
-        '<p class="ry-modal__text">Would you like to open the couple’s Instagram page?</p>' +
+        '<p class="ry-modal__text">Choose the profile you would like to open.</p>' +
         '<div class="ry-modal__actions">' +
-        '<a class="ry-modal__btn ry-modal__btn--primary" href="' +
-        esc(instagramUrl() || 'https://www.instagram.com/') +
-        '" target="_blank" rel="noopener">Open Instagram</a>' +
+        '<a class="ry-modal__btn ry-modal__btn--primary" href="' + esc(groomInstagramUrl()) +
+        '" target="_blank" rel="noopener">Groom Instagram</a>' +
+        '<a class="ry-modal__btn ry-modal__btn--primary" href="' + esc(brideInstagramUrl()) +
+        '" target="_blank" rel="noopener">Bride Instagram</a>' +
         '<button class="ry-modal__btn" type="button" data-ry-close>Not now</button>' +
         '</div>'
       );
@@ -353,10 +359,13 @@
   // mode the host may have changed a date in between.
   content.addEventListener('click', function (e) {
     if (e.target.closest('[data-ry-ig-save]')) {
-      var input = document.getElementById('ryIgInput');
-      if (input) {
-        if (!RY.config.social) RY.config.social = { instagram: true, instagramUrl: '' };
-        RY.config.social.instagramUrl = input.value.trim();
+      var groomInput = document.getElementById('ryGroomIgInput');
+      var brideInput = document.getElementById('ryBrideIgInput');
+      if (groomInput || brideInput) {
+        if (!RY.config.social) RY.config.social = { instagram: true };
+        RY.config.social.groomInstagramUrl = groomInput ? groomInput.value.trim() : '';
+        RY.config.social.brideInstagramUrl = brideInput ? brideInput.value.trim() : '';
+        RY.config.social.instagramUrl = RY.config.social.groomInstagramUrl;
         RY.save();
       }
       closeModal();
