@@ -116,8 +116,8 @@
 
 @media (orientation: portrait) and (max-width: 699px) {
   :root {
-    --gate-inset: max(calc(0.055 * var(--screen-h)), env(safe-area-inset-top));
-    --u: calc(min(0.782 * 100vw, 0.4 * var(--screen-h), 500px) / 402);
+    --gate-inset: max(calc(0.055 * var(--screen-h, 100vh)), env(safe-area-inset-top));
+    --u: calc(min(0.782 * 100vw, 0.4 * var(--screen-h, 100vh), 500px) / 402);
   }
 
   .royale-gate {
@@ -126,7 +126,7 @@
     width: 100vw;
     display: flex;
     align-items: center;
-    justify-content: center; /* This centers the 100vw wrapper contents */
+    justify-content: center;
     height: 100dvh;
     min-height: 100dvh;
     padding-bottom: calc(var(--gate-inset) + 150 * var(--u));
@@ -135,11 +135,14 @@
   .royale-card {
     flex: 0 0 auto;
     align-self: center;
-    width: 100vw; /* MUST stay 100vw for the ::before percentages to scale correctly */
+    /* Hardcoded viewport width bypasses Safari's calc() bug */
+    width: 78.2vw; 
+    position: relative;
   }
 
   .royale-card::before {
-    /* Kept exactly as you had it */
+    content: "";
+    position: absolute;
     top: -17.8998%;
     bottom: -26.7303%;
     left: -13.9304%;
