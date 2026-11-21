@@ -116,8 +116,8 @@
 
 @media (orientation: portrait) and (max-width: 699px) {
   :root {
-    --gate-inset: max(calc(0.055 * var(--screen-h, 100vh)), env(safe-area-inset-top));
-    --u: calc(min(0.782 * 100vw, 0.4 * var(--screen-h, 100vh), 500px) / 402);
+    --gate-inset: max(calc(0.055 * var(--screen-h)), env(safe-area-inset-top));
+    --u: calc(min(0.782 * 100vw, 0.4 * var(--screen-h), 500px) / 402);
   }
 
   .royale-gate {
@@ -126,7 +126,7 @@
     width: 100vw;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* Centers items horizontally */
     height: 100dvh;
     min-height: 100dvh;
     padding-bottom: calc(var(--gate-inset) + 150 * var(--u));
@@ -135,18 +135,14 @@
   .royale-card {
     flex: 0 0 auto;
     align-self: center;
-    /* Hardcoded viewport width bypasses Safari's calc() bug */
-    width: 78.2vw; 
+    
+    /* 1. Shrink it using your native variable to get perfect maroon borders */
+    width: calc(402 * var(--u)); 
+    
+    /* 2. Force it into the center to fix the right-skew issue */
+    margin: 0 auto;
+    left: 0;
     position: relative;
-  }
-
-  .royale-card::before {
-    content: "";
-    position: absolute;
-    top: -17.8998%;
-    bottom: -26.7303%;
-    left: -13.9304%;
-    right: -13.9304%;
   }
 }
 
