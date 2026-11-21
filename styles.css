@@ -117,7 +117,9 @@
 @media (orientation: portrait) and (max-width: 699px) {
   :root {
     --gate-inset: max(calc(0.055 * var(--screen-h)), env(safe-area-inset-top));
-    --u: calc(min(0.782 * 100vw, 0.4 * var(--screen-h), 500px) / 402);
+    /* The card stays full-width on phones; scale its contents from the short
+       viewport so the floral and elephant artwork have their own space. */
+    --u: calc(min(100vw, 0.37 * var(--screen-h), 500px) / 402);
   }
 
   .royale-gate {
