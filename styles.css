@@ -115,6 +115,9 @@
 @media (orientation: portrait) and (max-width: 699px) {
   :root {
     --gate-inset: max(calc(0.055 * var(--screen-h)), env(safe-area-inset-top));
+    /* Leave more vertical room between the card and the elephants on phone
+       heights where browser chrome makes the usable viewport short. */
+    --u: calc(min(100vw, 0.44 * var(--screen-h), 500px) / 402);
   }
 
   .royale-gate {
@@ -126,6 +129,7 @@
     align-items: center;
     height: 100dvh;
     min-height: 100dvh;
+    padding-bottom: calc(var(--gate-inset) + 150 * var(--u));
   }
 
   .royale-card {
@@ -1526,7 +1530,6 @@ body::before {
   background:
     url("media/gallery_bg.webp") center / cover no-repeat,
     var(--royale-paper);
-}
 
 /* media/divider3.png laid across the join with the date section above, the
    full width of the screen, where the other sections' joins have a torn
@@ -1917,6 +1920,9 @@ body::before {
   }
 
   .royale-gallery__scroll {
+    /* Measure each slide against the actual scrollport. On mobile browsers,
+       100vw can include width the horizontal scroller does not have. */
+    container-type: inline-size;
     scroll-snap-type: x mandatory;
   }
 
@@ -1933,6 +1939,7 @@ body::before {
   .gframe {
     position: static;
     flex: 0 0 100vw;
+    flex-basis: 100cqw;
     height: 100%;
     margin-top: 0;
     padding-top: var(--rail-y);
