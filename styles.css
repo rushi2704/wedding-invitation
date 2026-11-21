@@ -117,18 +117,16 @@
 @media (orientation: portrait) and (max-width: 699px) {
   :root {
     --gate-inset: max(calc(0.055 * var(--screen-h)), env(safe-area-inset-top));
-    /* Keep the wrapper inside the phone width and leave room for the elephants
-       on short viewports. */
     --u: calc(min(0.782 * 100vw, 0.4 * var(--screen-h), 500px) / 402);
   }
 
   .royale-gate {
-    /* Keep the cover and its card aligned to the phone's full viewport width,
-       including browsers that reserve the scrollbar inside the fixed box. */
     left: 0;
     right: auto;
     width: 100vw;
+    display: flex;
     align-items: center;
+    justify-content: center;
     height: 100dvh;
     min-height: 100dvh;
     padding-bottom: calc(var(--gate-inset) + 150 * var(--u));
@@ -137,12 +135,14 @@
   .royale-card {
     flex: 0 0 auto;
     align-self: center;
-    width: 100vw;
+    width: 90vw; 
+    max-width: 400px;
+    position: relative; /* Required for the ::before element to position correctly */
   }
 
   .royale-card::before {
-    /* Keep the Wrapper_P card face aligned without calc division, which has
-       varied across mobile browser engines. */
+    content: ""; /* Required to render the pseudo-element */
+    position: absolute; /* Required to use top/bottom/left/right */
     top: -17.8998%;
     bottom: -26.7303%;
     left: -13.9304%;
