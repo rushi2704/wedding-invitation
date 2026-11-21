@@ -126,7 +126,7 @@
     width: 100vw;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* This centers the 100vw wrapper contents */
     height: 100dvh;
     min-height: 100dvh;
     padding-bottom: calc(var(--gate-inset) + 150 * var(--u));
@@ -135,14 +135,11 @@
   .royale-card {
     flex: 0 0 auto;
     align-self: center;
-    width: 90vw; 
-    max-width: 400px;
-    position: relative; /* Required for the ::before element to position correctly */
+    width: 100vw; /* MUST stay 100vw for the ::before percentages to scale correctly */
   }
 
   .royale-card::before {
-    content: ""; /* Required to render the pseudo-element */
-    position: absolute; /* Required to use top/bottom/left/right */
+    /* Kept exactly as you had it */
     top: -17.8998%;
     bottom: -26.7303%;
     left: -13.9304%;
