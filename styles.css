@@ -1503,19 +1503,7 @@ body::before {
    edge and the ceremonies' maroon starts at the foot, and the frames want
    room off both. */
 
-/* Ship banner styling */
-.ship-banner {
-  text-align: center;
-  margin-bottom: 8px;
-}
-.ship-banner img {
-  max-width: 60px;
-  height: auto;
-}
-@media (max-width: 700px) {
-  .ship-banner img { max-width: 45px; }
-}
-
+.royale-gallery {
   --gallery-h: 900px;
   --frame-depth: 14px;
 
@@ -1530,6 +1518,7 @@ body::before {
   background:
     url("media/gallery_bg.webp") center / cover no-repeat,
     var(--royale-paper);
+}
 
 /* media/divider3.png laid across the join with the date section above, the
    full width of the screen, where the other sections' joins have a torn
@@ -1902,20 +1891,7 @@ body::before {
 
 /* Phones: one frame at a time, as rose does - a full-width snap carousel. */
 @media (max-width: 700px) {
-  
-/* Ship banner styling */
-.ship-banner {
-  text-align: center;
-  margin-bottom: 8px;
-}
-.ship-banner img {
-  max-width: 60px;
-  height: auto;
-}
-@media (max-width: 700px) {
-  .ship-banner img { max-width: 45px; }
-}
-
+  .royale-gallery {
     --gallery-h: 760px;
   }
 
@@ -3986,20 +3962,10 @@ body::before {
   padding-bottom: calc(clamp(16px, 3vw, 32px) + var(--date-band)) !important;
 }
 
-/* Ship banner styling */
-.ship-banner {
-  text-align: center;
-  margin-bottom: 8px;
-}
-.ship-banner img {
-  max-width: 60px;
-  height: auto;
-}
 @media (max-width: 700px) {
-  .ship-banner img { max-width: 45px; }
-}
-
-  padding-top: 16px !important;
+  .royale-date {
+    padding-top: 16px !important;
+  }
 }
 .gallery-swipe-pill {
   display: inline-block;
