@@ -117,11 +117,9 @@
 @media (orientation: portrait) and (max-width: 699px) {
   :root {
     --gate-inset: max(calc(0.055 * var(--screen-h)), env(safe-area-inset-top));
-    /* Scale the whole portrait gate to the visible phone area. The card art
-       is 514px wide around a 402px face; the first limit keeps that frame
-       inside the screen, and the second keeps the sprigs, card and elephants
-       from colliding on short iPhone viewports. */
-    --u: calc(min(0.782 * 100vw, 0.4 * var(--screen-h), 500px) / 402);
+    /* Leave more vertical room between the card and the elephants on phone
+       heights where browser chrome makes the usable viewport short. */
+    --u: calc(min(100vw, 0.44 * var(--screen-h), 500px) / 402);
   }
 
   .royale-gate {
@@ -139,11 +137,7 @@
   .royale-card {
     flex: 0 0 auto;
     align-self: center;
-    width: calc(402 * var(--u));
-  }
-
-  .royale-gate__elephant {
-    bottom: 0;
+    width: min(100vw, 500px);
   }
 
   .royale-card::before {
@@ -187,7 +181,7 @@
   }
 
   .royale-gate__elephant {
-    bottom: 0;
+    bottom: calc(8 * var(--u));
   }
 }
 
@@ -1563,7 +1557,7 @@ body::before {
     max-width: 520px;
     height: auto;
     margin: 18px 0 0;
-    transform: translateX(-50%);
+    transform: translate(-50%, -69%);
   }
 }
 
@@ -1900,7 +1894,7 @@ body::before {
 /* Phones: one frame at a time, as rose does - a full-width snap carousel. */
 @media (max-width: 700px) {
   .royale-gallery {
-    --gallery-h: 760px;
+    --gallery-h: clamp(600px, calc(70vw + 350px), 760px);
   }
 
   .royale-gallery__scroll {
@@ -1984,13 +1978,13 @@ body::before {
   }
 
   .royale-gallery > .royale-gallery__hint {
-    position: relative !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 20px !important;
     z-index: 20 !important;
     width: max-content !important;
-    margin: 18px auto 0 !important;
+    margin: 0 auto !important;
     padding: 8px 14px !important;
     transform: none !important;
   }
@@ -2176,6 +2170,13 @@ body::before {
 
   .ryc-divider {
     width: min(81%, 432px);
+  }
+}
+
+@media (max-width: 700px) {
+  .royale-ceremonies {
+    --corner-w: min(28%, 180px);
+    margin-top: 0;
   }
 }
 
