@@ -27,6 +27,7 @@
 :root {
   color-scheme: light only;
   forced-color-adjust: none;
+  -webkit-forced-color-adjust: none;
 
   --font-display: "Fraunces", Georgia, serif;
   --font-names: "Cormorant Garamond", Georgia, serif;
@@ -119,6 +120,7 @@
   body {
     color-scheme: light only;
     forced-color-adjust: none;
+    -webkit-forced-color-adjust: none;
   }
 }
 
@@ -204,6 +206,7 @@
 html {
   color-scheme: light only;
   forced-color-adjust: none;
+  -webkit-forced-color-adjust: none;
   overflow-x: clip;
   background-color: var(--royale-paper);
 }
@@ -213,6 +216,17 @@ body {
   overflow-x: clip;
   /* The positioning box for the page's motif below. */
   position: relative;
+}
+
+/* Prevent Samsung Internet / any browser forced dark mode from remapping any
+   element's colours.  color-scheme on :root/html is not always respected by
+   Samsung Internet's "Adapt Color" feature, so we also apply
+   forced-color-adjust on every element as a fallback. */
+*,
+*::before,
+*::after {
+  forced-color-adjust: none;
+  -webkit-forced-color-adjust: none;
 }
 
 /* --- the page's pattern ------------------------------------------------ */
