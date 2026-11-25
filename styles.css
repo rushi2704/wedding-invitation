@@ -25,6 +25,9 @@
    height alone (--k), so it always fits its door. */
 
 :root {
+  color-scheme: light only;
+  forced-color-adjust: none;
+
   --font-display: "Fraunces", Georgia, serif;
   --font-names: "Cormorant Garamond", Georgia, serif;
   --font-sans: "Sora", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -58,6 +61,8 @@
      in portrait, the sides in landscape (see there) - so the star flaps
      behind them show in that band. 7.86% of the screen's long side. */
   --gate-inset: calc(0.0786 * var(--screen-h));
+  --gate-inset-top: var(--gate-inset);
+  --gate-inset-bottom: var(--gate-inset);
 
   /* The crimson strip down the doors' seam, and along the flaps' inner
      edges - one figure so the two always match. */
@@ -108,47 +113,43 @@
   }
 }
 
-@supports (height: 1dvh) {
-  :root {
-    --screen-h: 100dvh;
+@media (prefers-color-scheme: dark) {
+  :root,
+  html,
+  body {
+    color-scheme: light only;
+    forced-color-adjust: none;
   }
 }
 
 @media (orientation: portrait) and (max-width: 699px) {
   :root {
     --gate-inset: max(calc(0.055 * var(--screen-h)), env(safe-area-inset-top));
-    /* The card stays full-width on phones; scale its contents from the short
-       viewport so the floral and elephant artwork have their own space. */
-    --u: calc(min(100vw, 0.37 * var(--screen-h), 500px) / 402);
+    --gate-inset-top: max(calc(0.055 * var(--screen-h)), env(safe-area-inset-top));
+    --gate-inset-bottom: max(calc(0.055 * var(--screen-h)), env(safe-area-inset-bottom));
+    /* Keep the card band full-width on phones while scaling its contents
+       against the small viewport height so sprigs, card and elephants stay
+       clear of each other and browser toolbars on iOS and Android. */
+    --u: calc(min(100vw, 0.38 * var(--screen-h), 500px) / 402);
   }
 
   .royale-gate {
-    left: 0;
-    right: auto;
-    width: 100vw;
-    align-items: center;
-    height: 100dvh;
-    min-height: 100dvh;
-    padding-bottom: calc(var(--gate-inset) + 150 * var(--u));
+    align-items: stretch;
+    padding-top: calc(var(--gate-inset-top) + 160 * var(--u));
+    padding-bottom: calc(var(--gate-inset-bottom) + 138 * var(--u));
   }
 
   .royale-card {
     flex: 0 0 auto;
-    align-self: center;
-    width: 100vw;
-  }
-
-  .royale-card::before {
-    top: -17.8998%;
-    bottom: -26.7303%;
-    left: -13.9304%;
-    right: -13.9304%;
+    width: 100%;
   }
 }
 
 @media (orientation: portrait) and (max-height: 700px) {
   :root {
-    --gate-inset: calc(0.06 * var(--screen-h));
+    --gate-inset: max(calc(0.06 * var(--screen-h)), env(safe-area-inset-top));
+    --gate-inset-top: max(calc(0.06 * var(--screen-h)), env(safe-area-inset-top));
+    --gate-inset-bottom: max(calc(0.06 * var(--screen-h)), env(safe-area-inset-bottom));
   }
 
   .royale-card {
@@ -201,11 +202,15 @@
 
 
 html {
+  color-scheme: light only;
+  forced-color-adjust: none;
+  overflow-x: clip;
   background-color: var(--royale-paper);
 }
 
 body {
   margin: 0;
+  overflow-x: clip;
   /* The positioning box for the page's motif below. */
   position: relative;
 }
@@ -2657,7 +2662,8 @@ body::before {
   display: flex;
   flex-direction: column;
   padding-block:
-    calc(var(--gate-inset) + 160 * var(--u)) calc(var(--gate-inset) + 126 * var(--u));
+    calc(var(--gate-inset-top, var(--gate-inset)) + 160 * var(--u))
+    calc(var(--gate-inset-bottom, var(--gate-inset)) + 138 * var(--u));
   overflow: hidden;
   /* The depth the doors swing open in: 2.4 door-widths (each door is half
      the screen). Deep enough for a door's free edge to visibly loom as it
@@ -2712,8 +2718,8 @@ body::before {
     0 calc(10 * var(--u)) calc(30 * var(--u)) calc(-10 * var(--u)) rgb(20 0 8 / 0.5);
 
   position: absolute;
-  top: var(--gate-inset);
-  bottom: var(--gate-inset);
+  top: var(--gate-inset-top, var(--gate-inset));
+  bottom: var(--gate-inset-bottom, var(--gate-inset));
   width: calc(50% + 1px);
   background-color: var(--royale-door);
   /* media/motif.png, faint, in a half-drop lattice - see --motif-tile. */
@@ -2950,8 +2956,8 @@ body::before {
 .royale-gate__decor {
   position: absolute;
   z-index: 2;
-  top: var(--gate-inset);
-  bottom: var(--gate-inset);
+  top: var(--gate-inset-top, var(--gate-inset));
+  bottom: var(--gate-inset-bottom, var(--gate-inset));
   width: calc(50% + 1px);
   pointer-events: none;
 }
@@ -3098,12 +3104,26 @@ body::before {
   content: "";
   position: absolute;
   z-index: -1;
-  /* Wrapper_P.svg is 514 x 606, its card x 56-458, y 75-494. */
-  top: calc(-75 / 419 * 100%);
-  bottom: calc(-112 / 419 * 100%);
-  left: calc(-56 / 402 * 100%);
-  right: calc(-56 / 402 * 100%);
-  background: url("media/Wrapper_P.svg#svgView(preserveAspectRatio(none))") center / 100% 100% no-repeat;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--royale-band) 0,
+      var(--royale-band) calc(15 * var(--u)),
+      transparent calc(15 * var(--u)),
+      transparent calc(100% - 15 * var(--u)),
+      var(--royale-band) calc(100% - 15 * var(--u)),
+      var(--royale-band) 100%
+    ),
+    var(--royale-paper);
+  box-shadow:
+    inset calc(15 * var(--u)) 0 calc(26 * var(--u)) calc(-10 * var(--u)) rgb(139 95 48 / 0.3),
+    inset calc(-15 * var(--u)) 0 calc(26 * var(--u)) calc(-10 * var(--u)) rgb(139 95 48 / 0.3),
+    inset calc(2 * var(--u)) 0 calc(4 * var(--u)) rgb(255 234 209 / 0.25),
+    inset calc(-2 * var(--u)) 0 calc(4 * var(--u)) rgb(255 234 209 / 0.25),
+    0 calc(14 * var(--u)) calc(31 * var(--u)) rgb(0 0 0 / 0.28),
+    0 calc(40 * var(--u)) calc(56 * var(--u)) rgb(0 0 0 / 0.22),
+    0 calc(-10 * var(--u)) calc(36 * var(--u)) rgb(0 0 0 / 0.22);
   pointer-events: none;
 }
 
@@ -3117,12 +3137,25 @@ body::before {
   }
 
   .royale-card::before {
-    /* Wrapper_D.svg is 788 x 1177, its card x 114-693, y 41-1065. */
-    top: calc(-41 / 1024 * 100%);
-    bottom: calc(-112 / 1024 * 100%);
-    left: calc(-114 / 579 * 100%);
-    right: calc(-95 / 579 * 100%);
-    background-image: url("media/Wrapper_D.svg#svgView(preserveAspectRatio(none))");
+    inset: 0;
+    background:
+      linear-gradient(
+        to right,
+        var(--royale-band) 0,
+        var(--royale-band) var(--border-w),
+        transparent var(--border-w),
+        transparent calc(100% - var(--border-w)),
+        var(--royale-band) calc(100% - var(--border-w)),
+        var(--royale-band) 100%
+      ),
+      var(--royale-paper);
+    box-shadow:
+      inset 0 calc(20 * var(--u)) calc(30 * var(--u)) calc(-10 * var(--u)) rgb(139 95 48 / 0.3),
+      inset 0 calc(-20 * var(--u)) calc(30 * var(--u)) calc(-10 * var(--u)) rgb(139 95 48 / 0.3),
+      inset 0 calc(4 * var(--u)) calc(4 * var(--u)) rgb(255 234 209 / 0.25),
+      inset 0 calc(-4 * var(--u)) calc(4 * var(--u)) rgb(255 234 209 / 0.25),
+      0 calc(14 * var(--u)) calc(31 * var(--u)) rgb(0 0 0 / 0.28),
+      0 calc(56 * var(--u)) calc(56 * var(--u)) rgb(0 0 0 / 0.18);
   }
 
   /* The border down both of the card's crimson bands (see --border). Over
@@ -3151,7 +3184,7 @@ body::before {
 .royale-card__motif {
   position: absolute;
   z-index: -1;
-  inset: calc(15 / 419 * 100%) 0;
+  inset: calc(15 * var(--u)) 0;
   background-color: var(--royale-ink);
   -webkit-mask: url("media/motif_tile.svg") repeat;
   mask: url("media/motif_tile.svg") repeat;
@@ -3164,7 +3197,7 @@ body::before {
 
 @media (orientation: landscape) {
   .royale-card__motif {
-    inset: 0 calc(15 / 579 * 100%);
+    inset: 0 var(--border-w);
   }
 }
 
@@ -3310,7 +3343,7 @@ body::before {
 
 @keyframes ry-card-up {
   to {
-    transform: translateY(calc(-50% - var(--screen-h) / 2 - 130 * var(--u)));
+    transform: translateY(calc(-50% - 60vh - 130 * var(--u)));
   }
 }
 
@@ -3330,6 +3363,7 @@ body::before {
    swing; it dims a touch as it turns away from the light. */
 .royale-gate__door,
 .royale-gate__decor {
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
@@ -3457,6 +3491,7 @@ body::before {
    the top one up and the bottom one down, in landscape the left and right
    ones outward - until it has turned its back and drops out. */
 .royale-gate__flap {
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
