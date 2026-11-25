@@ -25,9 +25,7 @@
    height alone (--k), so it always fits its door. */
 
 :root {
-  color-scheme: light;
-  forced-color-adjust: none !important;
-  -webkit-forced-color-adjust: none !important;
+  color-scheme: only light;
 
   --font-display: "Fraunces", Georgia, serif;
   --font-names: "Cormorant Garamond", Georgia, serif;
@@ -114,16 +112,6 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root,
-  html,
-  body {
-    color-scheme: light !important;
-    forced-color-adjust: none !important;
-    -webkit-forced-color-adjust: none !important;
-  }
-}
-
 @media (orientation: portrait) and (max-width: 699px) {
   :root {
     --gate-inset: max(calc(0.055 * var(--screen-h)), env(safe-area-inset-top));
@@ -204,9 +192,7 @@
 
 
 html {
-  color-scheme: light;
-  forced-color-adjust: none !important;
-  -webkit-forced-color-adjust: none !important;
+  color-scheme: only light;
   overflow-x: clip;
   background-color: var(--royale-paper);
 }
@@ -216,20 +202,6 @@ body {
   overflow-x: clip;
   /* The positioning box for the page's motif below. */
   position: relative;
-  color-scheme: light;
-  forced-color-adjust: none !important;
-  -webkit-forced-color-adjust: none !important;
-}
-
-/* Prevent Samsung Internet / any browser forced dark mode from remapping any
-   element's colours.  color-scheme on :root/html is not always respected by
-   Samsung Internet's "Adapt Color" feature, so we also apply
-   forced-color-adjust on every element as a fallback. */
-*,
-*::before,
-*::after {
-  forced-color-adjust: none !important;
-  -webkit-forced-color-adjust: none !important;
 }
 
 /* --- the page's pattern ------------------------------------------------ */
