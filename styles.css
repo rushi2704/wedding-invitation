@@ -956,12 +956,10 @@ body::before {
     calc(clamp(48px, 9vw, 120px) + var(--date-band));
 }
 
-/* Each band is drawn on a strip that reaches PAST the section, and carries
-   two layers: the border itself, held against the section's own edge, and a
-   soft shadow falling away from it onto the cream outside - the band reads
-   as a raised strip, as in the design. Building the shadow into the strip
-   rather than as a box-shadow keeps it out of the section: a box-shadow
-   blurs inward as well, and the design has none inside. */
+/* Each band is drawn on a strip that reaches PAST the section. The border
+   stays against the section edge while the shadow falls onto the paper
+   outside. The lower shadow uses a close, soft layer and a wider falloff like
+   the gallery frames; keeping it outside avoids shading the date artwork. */
 .royale-date::before,
 .royale-date::after {
   content: "";
@@ -980,10 +978,13 @@ body::before {
 }
 
 .royale-date::after {
+  /* This shadow falls outside the section, over the next section's wallpaper. */
+  z-index: 3;
   bottom: calc(-1 * var(--date-shade));
   background:
     var(--date-border) 0 0 / auto var(--date-band) repeat-x,
-    linear-gradient(to top, rgb(74 2 30 / 0), rgb(74 2 30 / 0.14)) 0 100% / 100% var(--date-shade) no-repeat;
+    linear-gradient(to bottom, rgb(40 0 15 / 0.16), transparent) 0 var(--date-band) / 100% var(--date-shade) no-repeat,
+    linear-gradient(to bottom, rgb(40 0 15 / 0.12), transparent) 0 var(--date-band) / 100% 10px no-repeat;
 }
 
 .royale-date__stage {
@@ -1491,71 +1492,72 @@ body::before {
    thick frames cannot share. Unlike rose, the frames run clean off both
    sides of the screen, with no fade at the edges. */
 /* The wall carries some paper above and below the frames rather than running
-   the rail's own box edge to edge: the lotus divider lies across the top
-   edge and the ceremonies' maroon starts at the foot, and the frames want
-   room off both. */
+   the rail's own box edge to edge: the lotus divider hangs just below the top
+   join, and the ceremonies' maroon starts at the foot. */
 
 .royale-gallery {
   --gallery-h: 900px;
+  /* Wallpaper breathing room after the last frame; the swipe hint sits midway. */
+  --gallery-tail: clamp(96px, 8vw, 144px);
+  --gallery-blend: clamp(220px, 24vw, 420px);
   --frame-depth: 14px;
 
   position: relative;
   padding-block: clamp(36px, 6vw, 88px);
+  padding-block-end: var(--gallery-tail);
   /* Sideways only: the band on its top edge has to bleed out vertically. */
   overflow-x: clip;
-  /* The papered wall the frames hang on, with the page's cream behind it
-     until it loads. Covered rather than tiled, so its floral corners stay in
-     the section's corners; on a narrow screen that crops the sides and
-     leaves mostly the paper itself. */
+  /* The papered wall the frames hang on. The top fade blends the date section
+     into this wallpaper. */
   background:
+    linear-gradient(to bottom, var(--royale-paper), rgb(253 229 201 / 0) var(--gallery-blend)),
     url("media/gallery_bg.webp") center / cover no-repeat,
     var(--royale-paper);
 }
 
-/* media/divider3.png laid across the join with the date section above, the
-   full width of the screen, where the other sections' joins have a torn
-   band. Its gold rule lies on the seam itself - the rule is 69% of the way
-   down the image. Above the rule the PNG is solid #fde5c9, the date
-   section's own cream, so that half simply carries the section on; below it
-   the image is clear, and its swags hang over the wallpaper. (.royale-pavilion,
-   above, leaves room over the seam for it.) */
+/* The transparent divider overlay bridges the date section and wallpaper.
+   On desktop it hangs just below the date border like the phone layout. Its
+   clear background lets the wallpaper show through around the lotus. */
 .royale-gallery__divider {
+  /* Centre the lotus between the upper date border and the gallery rail. */
+  --divider-offset: calc((76px + clamp(36px, 6vw, 88px)) / 2 - 6.3vw);
+
   position: absolute;
-  z-index: 2;
+  z-index: 4;
   top: 0;
   left: 0;
   width: 100%;
   height: auto;
-  transform: translateY(-69%);
+  transform: translateY(var(--divider-offset));
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
 }
 
-/* Landscape: half the screen, centred on the seam. A wide screen would
-   otherwise stretch the ornament right across it; at half the width it sits
-   as a piece laid over the join. Its own height follows (height: auto), so
-   the gold rule stays 69% down the picture and still lands on the seam. */
+/* On phones the image is in flow, so account for its height and the shorter
+   rail when centring the lotus between the two borders. */
 @media (max-width: 699px) {
   .royale-gallery__divider {
     position: relative;
     display: block;
-    z-index: 2;
+    z-index: 4;
     top: auto;
     left: 50%;
     width: 100%;
     max-width: 520px;
     height: auto;
     margin: 18px 0 0;
-    transform: translate(-50%, -69%);
+    transform: translate(-50%, calc(-52% + 5vw));
   }
 }
 
-@media (orientation: landscape) {
+@media (min-width: 700px) and (orientation: landscape) {
   .royale-gallery__divider {
+    --divider-offset: calc((76px + clamp(36px, 6vw, 88px)) / 2 - 3.2vw);
+
     left: 50%;
     width: 50vw;
-    transform: translate(-50%, -69%);
+    transform: translate(-50%, var(--divider-offset));
   }
 }
 
@@ -1757,8 +1759,9 @@ body::before {
   border-color: #8c1a40 #4f0421 #380116 #6b0e30;
   box-shadow:
     0 0 0 1px #2a0010,
-    14px 22px 28px rgb(40 0 15 / 0.3),
-    4px 6px 8px rgb(40 0 15 / 0.2);
+    4px 6px 10px rgb(53 40 29 / 0.2),
+    14px 22px 34px rgb(53 40 29 / 0.28),
+    24px 32px 48px rgb(53 40 29 / 0.12);
 }
 
 /* The red lip inside the moulding, bevelled the other way - it slopes DOWN
@@ -1885,6 +1888,7 @@ body::before {
 @media (max-width: 700px) {
   .royale-gallery {
     --gallery-h: clamp(600px, calc(70vw + 350px), 760px);
+    --gallery-tail: clamp(120px, 28vw, 180px);
   }
 
   .royale-gallery__scroll {
@@ -1955,10 +1959,26 @@ body::before {
   z-index: 6;
   left: 0;
   right: 0;
-  bottom: 20px;
+  bottom: calc(var(--gallery-tail) / 2);
   width: max-content;
   margin-inline: auto;
+  gap: 10px;
+  padding: 8px 14px;
+  background: rgb(253 242 225 / 0.58);
   transform: none;
+}
+
+.royale-gallery__hint .ry-hint__label {
+  color: var(--royale-door);
+  font-family: var(--font-names);
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.royale-gallery__hint .ry-hint__arrows:last-child i {
+  border-color: #bd8da8;
 }
 
 @media (max-width: 700px) {
@@ -1971,7 +1991,7 @@ body::before {
     position: absolute !important;
     left: 0 !important;
     right: 0 !important;
-    bottom: 20px !important;
+    bottom: calc(var(--gallery-tail) / 2) !important;
     z-index: 20 !important;
     width: max-content !important;
     margin: 0 auto !important;
@@ -1992,7 +2012,8 @@ body::before {
    title is 9.7cqw, the venue 5cqw and the date 4.6cqw, the time 3cqw, the
    pin 9cqw, and the illustration 74% of the panel wide by 54% of its height. */
 .royale-ceremonies {
-  margin-top: clamp(24px, 4vw, 48px);
+  /* The gallery's responsive tail provides the gap above this section. */
+  margin-top: 0;
   /* An ornament in each top corner, the right one the left one mirrored. */
   --corner-w: min(35%, 240px);
 
@@ -2166,7 +2187,6 @@ body::before {
 @media (max-width: 700px) {
   .royale-ceremonies {
     --corner-w: min(28%, 180px);
-    margin-top: 0;
   }
 }
 
