@@ -68,9 +68,13 @@
     var out = [];
     ceremonies().forEach(function (c) {
       if (!c.venue) return;
-      var l = out.filter(function (x) { return x.address === c.venue; })[0];
+      // Different areas of one venue can have slightly different labels while
+      // sharing the same map pin. Show one location card for that destination.
+      var key = c.mapUrl ? 'map:' + c.mapUrl : 'address:' + c.venue.toLowerCase();
+      var l = out.filter(function (x) { return x.key === key; })[0];
       if (!l) {
         l = {
+          key: key,
           names: [],
           venue: c.venue.split(',')[0].trim(),
           rest: c.venue.split(',').slice(1).join(',').trim(),

@@ -3747,6 +3747,7 @@ body::before {
 .ry-modal__box {
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: min(92vw, 430px);
@@ -3773,7 +3774,9 @@ body::before {
 }
 
 .ry-modal__content {
+  min-width: 0;
   min-height: 0;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 
@@ -3938,10 +3941,12 @@ body::before {
 }
 
 .ry-loc {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: 12px;
   width: 100%;
+  min-width: 0;
   padding: 12px 14px;
   border: 1px solid rgba(127, 16, 56, 0.22);
   border-radius: 10px;
@@ -3976,6 +3981,7 @@ body::before {
   display: grid;
   gap: 2px;
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 /* The quiet line: which ceremonies this row covers. */
@@ -4003,6 +4009,28 @@ body::before {
   flex: none;
   font-size: 20px;
   color: var(--royale-ink);
+}
+
+@media (max-width: 480px) {
+  .ry-loc {
+    gap: 9px;
+    padding: 9px 10px;
+  }
+
+  .ry-loc__pin {
+    width: 22px;
+    height: 22px;
+  }
+
+  .ry-loc__ceremonies {
+    font-size: 10px;
+    letter-spacing: 0.09em;
+    line-height: 1.25;
+  }
+
+  .ry-loc__addr {
+    font-size: 11.5px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
