@@ -7,12 +7,27 @@
     localStorage.removeItem('royaleConfig');
     localStorage.removeItem('royaleTrialConfig');
   } catch(e) {}
+  /* Samsung Internet "Adapt Colors" / force-dark kill-switch.
+     Must run before any CSS is parsed so the browser sees color-scheme
+     on the root element from the very first paint. */
+  try {
+    document.documentElement.style.setProperty('color-scheme', 'light');
+    document.documentElement.style.setProperty('forced-color-adjust', 'none');
+    document.documentElement.style.setProperty('-webkit-forced-color-adjust', 'none');
+  } catch(e) {}
 </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="color-scheme" content="light only">
-    <meta name="supported-color-schemes" content="light only">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
+    <meta name="theme-color" content="#560f31">
+    <meta name="theme-color" content="#560f31" media="(prefers-color-scheme: dark)">
     <title>Rushikesh & Bhakti — Wedding Invitation</title>
+    <!-- Samsung Internet force-dark kill-switch: must load before any stylesheet -->
+    <style>
+      :root, html, body { color-scheme: light !important; }
+      *, *::before, *::after { forced-color-adjust: none !important; -webkit-forced-color-adjust: none !important; }
+    </style>
 
     <!-- Fraunces (cover greeting) and Cormorant Garamond (couple names) are
          self-hosted - see _platform/vendor/fonts/fonts.css for why. -->

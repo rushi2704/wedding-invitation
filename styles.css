@@ -25,9 +25,9 @@
    height alone (--k), so it always fits its door. */
 
 :root {
-  color-scheme: light only;
-  forced-color-adjust: none;
-  -webkit-forced-color-adjust: none;
+  color-scheme: light;
+  forced-color-adjust: none !important;
+  -webkit-forced-color-adjust: none !important;
 
   --font-display: "Fraunces", Georgia, serif;
   --font-names: "Cormorant Garamond", Georgia, serif;
@@ -118,9 +118,9 @@
   :root,
   html,
   body {
-    color-scheme: light only;
-    forced-color-adjust: none;
-    -webkit-forced-color-adjust: none;
+    color-scheme: light !important;
+    forced-color-adjust: none !important;
+    -webkit-forced-color-adjust: none !important;
   }
 }
 
@@ -204,9 +204,9 @@
 
 
 html {
-  color-scheme: light only;
-  forced-color-adjust: none;
-  -webkit-forced-color-adjust: none;
+  color-scheme: light;
+  forced-color-adjust: none !important;
+  -webkit-forced-color-adjust: none !important;
   overflow-x: clip;
   background-color: var(--royale-paper);
 }
@@ -216,6 +216,9 @@ body {
   overflow-x: clip;
   /* The positioning box for the page's motif below. */
   position: relative;
+  color-scheme: light;
+  forced-color-adjust: none !important;
+  -webkit-forced-color-adjust: none !important;
 }
 
 /* Prevent Samsung Internet / any browser forced dark mode from remapping any
@@ -225,8 +228,8 @@ body {
 *,
 *::before,
 *::after {
-  forced-color-adjust: none;
-  -webkit-forced-color-adjust: none;
+  forced-color-adjust: none !important;
+  -webkit-forced-color-adjust: none !important;
 }
 
 /* --- the page's pattern ------------------------------------------------ */
