@@ -234,7 +234,7 @@
 
   function brideInstagramUrl() {
     var social = RY.config.social || {};
-    return (social.brideInstagramUrl || '').trim() || 'https://www.instagram.com/bhakti_kahalekar/';
+    return (social.brideInstagramUrl || '').trim() || '';
   }
 
   if (igBtn) {

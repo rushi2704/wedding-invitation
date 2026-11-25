@@ -247,7 +247,7 @@
       instagram: true,
       instagramUrl: 'https://www.instagram.com/rushikesh_patil.4/',
       groomInstagramUrl: 'https://www.instagram.com/rushikesh_patil.4/',
-      brideInstagramUrl: 'https://www.instagram.com/bhakti_kahalekar/',
+      brideInstagramUrl: '',
     },
 
     music: { enabled: true, src: 'music/Jashn-e-bahara Instrumental.mp3', volume: 0.8 },
